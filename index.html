@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>DAVE'S ASTEROIDS RAGE - ARCADE EDITION</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="arcade-cabinet">
+        <div class="arcade-header">
+            <div class="arcade-title">
+                <h1>🌊 DAVE'S ASTEROIDS RAGE 🌊</h1>
+                <div class="subtitle">ARCADE EDITION</div>
+            </div>
+        </div>
+        
+        <div class="game-screen">
+            <div class="score-panel">
+                <div class="score-row">
+                    <div class="score-item">
+                        <span class="label">SCORE</span>
+                        <span class="value" id="score">000000</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="label">HIGH SCORE</span>
+                        <span class="value" id="highScore">000000</span>
+                    </div>
+                </div>
+                <div class="score-row">
+                    <div class="score-item">
+                        <span class="label">LIVES</span>
+                        <span class="value" id="lives">3</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="label">LEVEL</span>
+                        <span class="value" id="level">1</span>
+                    </div>
+                    <div class="score-item money-display">
+                        <span class="label">💰 MONEY</span>
+                        <span class="value" id="money">$0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            
+            <div class="game-info">
+                <div class="power-up-display">
+                    <div class="power-up-item" id="rapidFire">
+                        <span class="power-label">RAPID FIRE</span>
+                        <div class="power-bar">
+                            <div class="power-fill" id="rapidFireBar"></div>
+                        </div>
+                    </div>
+                    <div class="power-up-item" id="shield">
+                        <span class="power-label">SHIELD</span>
+                        <div class="power-bar">
+                            <div class="power-fill" id="shieldBar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Touch Controls -->
+        <div class="mobile-controls">
+            <div class="control-area">
+                <div class="joystick-area">
+                    <div class="joystick" id="joystick">
+                        <div class="joystick-knob" id="joystickKnob"></div>
+                    </div>
+                    <div class="joystick-label">MOVE</div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn shoot-btn" id="shootBtn">
+                        <span class="btn-icon">🎯</span>
+                        <span class="btn-label">SHOOT</span>
+                    </button>
+                    <button class="action-btn pause-btn" id="pauseBtn">
+                        <span class="btn-icon">⏸️</span>
+                        <span class="btn-label">PAUSE</span>
+                    </button>
+                    <button class="action-btn sound-btn" id="soundBtn">
+                        <span class="btn-icon">🔊</span>
+                        <span class="btn-label">SOUND</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="arcade-controls desktop-only">
+            <div class="control-panel">
+                <div class="control-section">
+                    <h3>🎮 CONTROLS</h3>
+                    <div class="control-grid">
+                        <div class="control-item">
+                            <span class="control-key">↑↓←→</span>
+                            <span class="control-desc">MOVE DAVE</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="control-key">SPACE</span>
+                            <span class="control-desc">SHOOT</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="control-key">P</span>
+                            <span class="control-desc">PAUSE</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="control-key">M</span>
+                            <span class="control-desc">SOUND</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-section">
+                    <h3>🎯 POWER-UPS</h3>
+                    <div class="power-up-list">
+                        <div class="power-up-desc">💥 RAPID FIRE - Faster shooting</div>
+                        <div class="power-up-desc">🛡️ SHIELD - Temporary protection</div>
+                        <div class="power-up-desc">💰 MONEY BONUS - Extra cash</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="gameOver" class="game-over hidden">
+            <div class="game-over-content">
+                <h2>GAME OVER</h2>
+                <div class="final-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">FINAL SCORE</span>
+                        <span class="stat-value" id="finalScore">000000</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">MONEY LOST</span>
+                        <span class="stat-value" id="finalMoney">$0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">LEVEL REACHED</span>
+                        <span class="stat-value" id="finalLevel">1</span>
+                    </div>
+                </div>
+                <button id="restartBtn" class="arcade-button">INSERT COIN TO PLAY AGAIN</button>
+            </div>
+        </div>
+        
+        <div id="pauseMenu" class="pause-menu hidden">
+            <div class="pause-content">
+                <h2>GAME PAUSED</h2>
+                <p>Press P to continue</p>
+                <button class="mobile-pause-resume" id="mobileResumeBtn">RESUME GAME</button>
+            </div>
+        </div>
+        
+        <div id="exWifeWarning" class="ex-wife-warning hidden">
+            <div class="warning-content">
+                <h2>⚠️ WARNING! ⚠️</h2>
+                <p>KAREN IS COMING FOR THE MONEY!</p>
+                <p>DON'T LET HER CATCH YOU!</p>
+                <div class="warning-timer" id="warningTimer">3</div>
+            </div>
+        </div>
+        
+        <div id="levelComplete" class="level-complete hidden">
+            <div class="level-content">
+                <h2>LEVEL COMPLETE!</h2>
+                <div class="level-bonus">
+                    <span class="bonus-label">BONUS:</span>
+                    <span class="bonus-value" id="levelBonus">$1000</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio Elements -->
+    <audio id="shootSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    
+    <audio id="explosionSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    
+    <audio id="exWifeSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    
+    <audio id="moneySound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    
+    <audio id="powerUpSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    
+    <script src="game.js"></script>
+</body>
+</html> 
